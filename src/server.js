@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Initialize the main project folder
-app.use(express.static('website'));
+app.use(express.static('static/website'));
 
 
 // Start server 
