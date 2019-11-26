@@ -3,13 +3,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+// Import routes
+const routes = require('./routes');
+
 
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
 
-
-// Start up an instance of app
+// Create an app instance
 const app = express();
+
+// Connect all the routes to the application 
+app.use('/', routes);
+
 
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
@@ -20,7 +26,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Initialize the main project folder
-app.use(express.static('static/website'));
+app.use(express.static('public/website'));
 
 
 // Start server 
