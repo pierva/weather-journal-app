@@ -21,9 +21,12 @@ const getWeatherData = (url = '') => {
 
 router.route('/weather')
     .get((req, res) => {
+        const zip = req.query.zip;
+        // Validation check for request without zip code
+        if(!zip) return res.send({error: 'No zip code provided'})
         request({
             method: 'GET',
-            uri: OWM_URL+'zip=33166&'+OWM_APIKEY      
+            uri: OWM_URL+`zip=&${req.query.zip}`+OWM_APIKEY      
         }, (error, response, body) => {
             if(!error && response.statusCode === 200) {
                 // Everything went well, return the json data
