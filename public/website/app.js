@@ -2,14 +2,25 @@
 
 /* Global Variables */
 const model = {
-    
+    inputSelectors: ['#zip', '#feelings'],
+    weatherPath: '/weather',
 };
 
 const octopus = {
+    init: () => {
+        view.init();
+    },
+
+    getWeatherPath: () => model.weatherPath,
+
     generateNewDate: () => {
         // Create a new date instance dynamically with JS
         let d = new Date();
         return d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+    },
+
+    getInputSelectors: () => {
+        return model.inputSelectors;
     },
 
     getWeatherData: async (url = '') => {
@@ -43,17 +54,22 @@ const view = {
         return inputs;
     },
 
-    addEventListener: () => {
+    addEventListeners: () => {
         const submitButton = document.getElementById('generate');
-        submitButton.addEventListener('submit', (event) => {
+        submitButton.addEventListener('click', (event) => {
+            console.log('clicked')
             // Prevent default is needed in case we use a form, this 
             // way we prevent page reload
             event.preventDefault();
-            // get zip code
-            const zip = document.getElementById('zip').value;
-            const feelings = document.getElementById('feelings').value;
+            // get user inputs
+            const selectors = octopus.getInputSelectors();
+            const inputs = view.getUserInputs(selectors);
+            const origin = window.location.origin;
+            octopus.getWeatherData(origin + octopus.getWeatherPath())
+            
 
         })
     }
 }
 
+octopus.init();
