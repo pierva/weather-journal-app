@@ -1,23 +1,22 @@
 const express = require('express');
 const request = require('request');
+const bodyParser = require('body-parser');
 
 // Create the router
 const router = express.Router(); 
 
-/* Open weather map credentials */
-const OWM_APIKEY = '{your_key}';
-const OWM_URL = 'http://api.openweathermap.org/data/2.5/weather?'
+// Setup empty JS object to temporary hold all the data
+projectData = {};
 
-const getWeatherData = (url = '') => {
-    const response = request(url, {json: true}, (err, res, body) => {
-        if(err) {
-            console.log(error);
-            return error; 
-        }
-        return body;
-    });
-    return response;
-}
+/* Open weather map credentials */
+const OWM_APIKEY = '&appid={yourkey}';
+const OWM_URL = 'http://api.openweathermap.org/data/2.5/weather?';
+
+/* Middleware*/
+//Here we are configuring express to use body-parser as middle-ware.
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
 
 router.route('/weather')
     .get((req, res) => {
@@ -26,9 +25,12 @@ router.route('/weather')
         if(!zip) return res.send({error: 'No zip code provided'})
         request({
             method: 'GET',
-            uri: OWM_URL+`zip=&${req.query.zip}`+OWM_APIKEY      
+            uri: OWM_URL+'zip=' + zip + OWM_APIKEY      
         }, (error, response, body) => {
             if(!error && response.statusCode === 200) {
+                // Update the local object with the weather data
+                projectData['weather'] = JSON.parse(body);
+
                 // Everything went well, return the json data
                 return res.send(body);
             } 
@@ -42,5 +44,13 @@ router.route('/weather')
             }
         });
     });
+
+router.route('/postdata')
+    .post((req, res) => {
+        // add data to the projectData object
+        projectData = {...projectData, ...req.body}
+        return res.send(projectData);
+    });
+
 
 module.exports = router;
