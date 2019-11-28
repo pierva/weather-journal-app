@@ -1,19 +1,14 @@
-/* Reset */
-* {
-    padding: 0;
-    margin: 0;
-}
-
 /* 1em reference */
 body {
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
 .wrapper {
     height: 100vh;
     display: grid;
-    grid-auto-rows: minmax(150px, auto);
     grid-template-columns: 100%;
     padding: 3em;
     justify-content: center;
@@ -23,6 +18,10 @@ body {
 
 .headline {
     font-size: 3em;
+}
+
+.subtitle {
+    font-size: 2em;
 }
 
 .input-group {
@@ -54,12 +53,28 @@ body {
 }
 
 .button {
-    font-size: 2em;
+    font-size: 1.5em;
     background-color: #575757;
     font-family: 'Owsald', sans-serif;
     color: #FFF;
-    padding: 0.5em 1.5em;
+    padding: 0.5em 1.25em;
     cursor: pointer;
+}
+
+#feedback {
+    padding: 1em;
+    border-radius: 0.25em;
+    transition: all 0.5 ease-in-out;
+}
+
+.error {
+    border: 1px solid #F00;
+    color: #F00;
+}
+
+.success {
+    border: 1px solid #018601;
+    color: #018601;
 }
 
 
