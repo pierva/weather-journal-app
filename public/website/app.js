@@ -17,10 +17,10 @@ const octopus = {
 
     getPostPath: () => model.postPath,
 
-    generateNewDate: () => {
+    generateNewDatetime: () => {
         // Create a new date instance dynamically with JS
         let d = new Date();
-        return d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
+        return `${d.getMonth}.${d.getDate()}.${d.getFullYear} - ${d.getHours()}:${d.getMinutes()}`;
     },
 
     getInputSelectors: () => {
@@ -76,9 +76,13 @@ const view = {
         const regex = new RegExp('^(#|.)');
         for (let selector of selectors) {
             const domEle = document.querySelector(selector);
-            inputs[selector.replace(regex, '')] = domEle.value;
+            inputs[selector.replace(regex, '')] = domEle.value.trim();
         }
         return inputs;
+    },
+
+    updateUI: (data) => {
+        console.log(data);
     },
 
     addEventListeners: () => {
@@ -93,10 +97,18 @@ const view = {
             
             octopus.getWeatherData(
                 octopus.getWeatherPath() + '?zip=' + inputs.zip)
-                .then((data) => {
+                .then((weatherData) => {
+                    if(weatherData.error) {
+                        const errorDiv = document.querySelector('#feedback');
+                        errorDiv.innerHTML = weatherData.error;
+                        errorDiv.classList.add('error');
+                    }
                     octopus.postData(octopus.getPostPath(), inputs)
-                })
-        })
+                        .then((data) => {
+                            view.updateUI();
+                        });
+                });
+        });
     }
 }
 
