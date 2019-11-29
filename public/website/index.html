@@ -33,15 +33,19 @@
                 </div>
             </form>
 
-            <div>
+            <div id="entryHolder">
                 <h2 class="subtitle">Most recent entry</h2>
-                <div class="entry-holder">
-                    <div class="entry-item" id="date">2019-11-28 11:54</div>
-                    <div id="summary"></div>
-                    <div id="temp">27</div>
-                    <div id="pressure">1013.15</div>
-                    <div id="content"></div>
+                <div class="entry-item" id="date"></div>
+                <div class="entry-item text-capitalize" id="summary"></div>
+                <div class="entry-group">
+                  <div class="entry-item" id="temp"></div>
+                  <div class="entry-item" id="rh"></div>
+                  <div class="entry-item" id="pressure"></div>
                 </div>
+                <br>
+                <hr>
+                <h3 class="subtitle-secondary">Your feelings</label>
+                <div class="entry-item" id="content"></div>
             </div>
 
         </main>

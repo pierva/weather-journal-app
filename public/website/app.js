@@ -19,8 +19,14 @@ const octopus = {
 
     generateNewDatetime: () => {
         // Create a new date instance dynamically with JS
+        // Output is MM.DD.YYYY - hh:mm
         let d = new Date();
-        return `${d.getMonth}.${d.getDate()}.${d.getFullYear} - ${d.getHours()}:${d.getMinutes()}`;
+        const hrs = d.getHours();
+        const mins = d.getMinutes();
+        const hrsFormatted = hrs < 10 ? '0' + hrs : hrs;
+        const minsFormatted = mins < 10 ? '0' + mins : mins;
+
+        return `${d.getMonth()}.${d.getDate()}.${d.getFullYear()} - ${hrsFormatted}:${minsFormatted}`;
     },
 
     getInputSelectors: () => {
@@ -31,7 +37,6 @@ const octopus = {
         const response = await fetch(model.origin + path);
         try {
             const data = await response.json();
-            console.log(data);
             return data;
         } catch (error) {
             console.log('error: ', error);
@@ -53,7 +58,6 @@ const octopus = {
 
         try {
             const newData = await response.json();
-            console.log(newData);
             return newData;
         } catch (error) {
             return error;
@@ -70,19 +74,50 @@ const view = {
         })
     },
 
-    getUserInputs: (selectors = []) => {
+    /**
+     * @selectors array of css selectors (id, class, or tag)
+     * @reset boolean to reset the inputs content. Default false
+    */
+    getUserInputs: (selectors = [], reset = false) => {
         let inputs = {};
         // Strip leading '.' or '#' for class and id selectors
         const regex = new RegExp('^(#|.)');
         for (let selector of selectors) {
             const domEle = document.querySelector(selector);
             inputs[selector.replace(regex, '')] = domEle.value.trim();
+            if(reset) {
+                domEle.value = '';
+            }
         }
         return inputs;
     },
 
     updateUI: (data) => {
-        console.log(data);
+        const date = octopus.generateNewDatetime();
+        document.querySelector('#date').textContent = date;
+        if (data && data.weather) {
+            document.querySelector('#summary').textContent = 
+                data.weather.weather[0].description || 'N/A';
+            document.querySelector('#temp').textContent = 
+                (data.weather.main.temp - 273.15).toFixed(2) + '°C';
+            document.querySelector('#rh').textContent = 
+                data.weather.main.humidity + '%';
+            document.querySelector('#pressure').textContent = 
+                data.weather.main.pressure + ' mbar';
+            document.querySelector('#content').textContent = 
+                data.feelings;
+        }
+    },
+
+    showFeedback: (message, type) => {
+        const errorDiv = document.querySelector('#feedback');
+        errorDiv.textContent = message;
+        errorDiv.classList.add(type);
+        // Reset the error message
+        setTimeout(function() {
+            errorDiv.textContent = '';
+            errorDiv.classList.remove(type);
+        }, 3000);
     },
 
     addEventListeners: () => {
@@ -93,19 +128,21 @@ const view = {
             event.preventDefault();
             // get user inputs
             const selectors = octopus.getInputSelectors();
-            const inputs = view.getUserInputs(selectors);
+            const inputs = view.getUserInputs(selectors, true);
             
             octopus.getWeatherData(
                 octopus.getWeatherPath() + '?zip=' + inputs.zip)
                 .then((weatherData) => {
                     if(weatherData.error) {
-                        const errorDiv = document.querySelector('#feedback');
-                        errorDiv.innerHTML = weatherData.error;
-                        errorDiv.classList.add('error');
+                        view.showFeedback(weatherData.error, 'error');
+                        return;
+                    }
+                    if (weatherData.cod === "404") {
+                        view.showFeedback(weatherData.message, 'error');
                     }
                     octopus.postData(octopus.getPostPath(), inputs)
                         .then((data) => {
-                            view.updateUI();
+                            view.updateUI(data);
                         });
                 });
         });

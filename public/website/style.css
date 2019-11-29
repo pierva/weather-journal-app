@@ -4,6 +4,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     padding: 0;
     margin: 0;
+    color: #333333;
 }
 
 .wrapper {
@@ -22,6 +23,10 @@ body {
 
 .subtitle {
     font-size: 2em;
+}
+
+.subtitle-secondary {
+    font-size: 1.75em;
 }
 
 .input-group {
@@ -50,6 +55,10 @@ body {
 
 .text-right {
     text-align: right;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
 }
 
 .button {
@@ -89,12 +98,16 @@ textarea{
     font-family: 'Oswald', sans-serif;
 }
 
-#temp::after {
-    content: '\00b0 C';
+.entry-group {
+    display: flex;
+    flex-wrap: wrap;
+    color: #0000d3;
 }
 
-#pressure::after {
-    content: ' mbar';
+.entry-item {
+    padding: 0.25em 0.5em;
+    font-size: 1.75rem;
+    font-weight: 400;
 }
 
 
