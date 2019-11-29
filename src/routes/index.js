@@ -2,6 +2,9 @@ const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
 
+// Require and configure dotenv for env variables 
+require('dotenv').config();
+
 // Create the router
 const router = express.Router(); 
 
@@ -9,7 +12,7 @@ const router = express.Router();
 projectData = {};
 
 /* Open weather map credentials */
-const OWM_APIKEY = '&appid={yourkey}';
+const OWM_APIKEY = '&appid=' + process.env.OWM_APIKEY;
 const OWM_URL = 'http://api.openweathermap.org/data/2.5/weather?';
 
 /* Middleware*/
