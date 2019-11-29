@@ -1,10 +1,27 @@
 # Weather-Journal App Project
 
 ## Overview
-This project requires you to create an asynchronous web app that uses Web API and user data to dynamically update the UI. 
+This project is meant to demonstrate how to create an asynchronous web app that uses Web API and user data to dynamically update the UI. 
 
 ## Instructions
-This will require modifying the `server.js` file and the `website/app.js` file. You can see `index.html` for element references, and once you are finished with the project steps, you can use `style.css` to style your application to customized perfection.
+Before running the server, obtain an API key from OpenWeatherMap.org.
+Once the api key is obtained, create a .env file in the root of the project and add the following line (inserting the key previously obtained):
 
-## Extras
-If you are interested in testing your code as you go, you can use `tests.js` as a template for writing and running some basic tests for your code.
+```
+OWM_APIKEY=your-key-goes-here
+```
+
+## Start the server
+You have to options to start the server, one with nodemon and onther one with node.
+
+Start the server with nodemon
+```sh
+$ npm run start-dev
+```
+
+Start the server with node
+```sh
+$ npm run start
+```
+
+
