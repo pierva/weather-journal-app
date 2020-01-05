@@ -26,7 +26,7 @@ const octopus = {
         const hrsFormatted = hrs < 10 ? '0' + hrs : hrs;
         const minsFormatted = mins < 10 ? '0' + mins : mins;
 
-        return `${d.getMonth()}.${d.getDate()}.${d.getFullYear()} - ${hrsFormatted}:${minsFormatted}`;
+        return `${d.getMonth()+1}.${d.getDate()}.${d.getFullYear()} - ${hrsFormatted}:${minsFormatted}`;
     },
 
     getInputSelectors: () => {
